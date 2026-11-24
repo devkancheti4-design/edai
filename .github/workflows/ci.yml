@@ -1,0 +1,205 @@
+# Checks the compiled brain on every push and pull request, through its public interface only (brain/include/aa.h).
+# Nothing here builds or changes the brain: each job links the libraries in brain/lib as they are and compares the
+# output with the references already in this repository.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"        # weekly: also runs the slow Cortex-M0 job
+
+permissions:
+  contents: read
+
+jobs:
+  checksums:
+    name: Checksums of the published files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sha256sum -c SHA256SUMS.txt
+
+  native:
+    name: Native (${{ matrix.target }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux-x86_64
+            os: ubuntu-latest
+          - target: linux-aarch64
+            os: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
+    env:
+      TARGET: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Main 300, every line the same as the reference
+        working-directory: runners/computer
+        run: |
+          make run300 TARGET=$TARGET
+          ./run300 > my-run.txt
+          python3 ../../score.py my-run.txt
+          diff <(grep '^p' expected.txt) <(grep '^p' my-run.txt)
+          echo "every line the same as the reference: 300 of 300"
+
+      - name: Five fresh sets, every line the same as each reference
+        working-directory: runners/computer
+        run: |
+          set -e
+          for s in 23 24 25 26 27; do
+            d=build-fresh/$s; mkdir -p $d
+            cp run300.c harness.c harness.h fresh/seed-$s/stream_data.h $d/
+            cc -std=c11 -O2 -I../../brain/include $d/run300.c $d/harness.c ../../brain/lib/$TARGET/libaa.a -o $d/run300
+            $d/run300 > $d/my-run.txt
+            printf "seed $s: "; python3 ../../score.py $d/my-run.txt --key ../../problems/fresh/seed-$s/answers.json
+            diff <(grep '^p' fresh/seed-$s/expected.txt) <(grep '^p' $d/my-run.txt)
+          done
+          echo "all five fresh sets: every line the same as the reference"
+
+      - name: Exactness (issue #1) - no exact answer contradicts its examples
+        working-directory: tests/exactness
+        run: make check TARGET=$TARGET
+
+      - name: API contract - every case as aa.h documents
+        working-directory: tests/probes
+        run: |
+          mkdir -p build
+          cc -std=c11 -O1 -I../../brain/include tools/contract.c ../../brain/lib/$TARGET/libaa.a -o build/contract
+          ./build/contract | tee contract.txt | tail -3
+          grep -Eq '^[0-9]+ cases, 0 violations of the documented contract$' contract.txt
+
+      - name: Stack stays within AA_STACK_BYTES; no heap, no global data
+        working-directory: tests/probes
+        run: |
+          LIB=../../brain/lib/$TARGET/libaa.a
+          cc -std=c11 -D_GNU_SOURCE -O2 -I../../brain/include tools/stack_probe.c $LIB -o build/stack_probe -lpthread
+          python3 tools/to_lines.py ../../problems/problems.json | ./build/stack_probe > stack.txt 2> stack-summary.txt
+          cat stack-summary.txt
+          worst=$(sed -n 's/^worst library stack use: \([0-9]*\) bytes (promise: at most \([0-9]*\))$/\1 \2/p' stack-summary.txt)
+          test -n "$worst"
+          set -- $worst; test "$1" -le "$2"
+          data=$(nm "$LIB" | awk 'NF >= 3 && $2 ~ /^[DdBbCc]$/' | wc -l)
+          echo "data or bss symbols in the library: $data"
+          test "$data" -eq 0
+
+      - name: Sensor runner builds and answers
+        working-directory: sensors
+        run: |
+          make sensor_run TARGET=$TARGET
+          echo "w1 8 1 2 3 4 5 6 7 8 9 11 13 15 17 19 21 23 2 10 20" | ./sensor_run | tee out.txt
+          grep -q '^w1 by=AM ans=27,47' out.txt
+
+  wasm:
+    name: WebAssembly (browser page) matches native
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Native and WebAssembly give the same answers on all 1,800 published problems
+        working-directory: tests/probes
+        env:
+          EDAI_REPO: ${{ github.workspace }}
+        run: |
+          set -e
+          mkdir -p build
+          cc -std=c11 -O2 -I../../brain/include tools/native_solve.c ../../brain/lib/linux-x86_64/libaa.a -o build/native_solve
+          for f in ../../problems/problems.json ../../problems/fresh/seed-*/problems.json; do
+            python3 tools/to_lines.py $f > build/in.lines
+            ./build/native_solve < build/in.lines | cut -d' ' -f1-4 > build/native.txt
+            node tools/wasm_solve.mjs < build/in.lines | cut -d' ' -f1-4 > build/wasm.txt
+            diff build/native.txt build/wasm.txt
+            echo "$f: $(wc -l < build/wasm.txt) problems, native and WebAssembly the same"
+          done
+
+  cortex-m:
+    name: Emulated ${{ matrix.core }} (QEMU)
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - core: cortex-m4f
+            flags: -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+            ld: mps2.ld
+            board: mps2-an386
+          - core: cortex-m7
+            flags: -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=hard
+            ld: mps2.ld
+            board: mps2-an500
+          - core: cortex-m33
+            flags: -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard
+            ld: an505.ld
+            board: mps2-an505
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the GNU Arm toolchain and QEMU
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q gcc-arm-none-eabi libnewlib-arm-none-eabi qemu-system-arm
+      - name: Build the test program with the ${{ matrix.core }} library
+        run: |
+          arm-none-eabi-gcc ${{ matrix.flags }} -mthumb -Os -ffreestanding -nostartfiles \
+            -Wl,--gc-sections -Wl,--no-enum-size-warning -Ibrain/include -Irunners/computer \
+            -T results/qemu/src/${{ matrix.ld }} \
+            results/qemu/src/main_qemu.c runners/computer/harness.c results/qemu/src/startup_cortex_m.c \
+            brain/lib/${{ matrix.core }}/libaa.a -lc -lgcc -o test.elf
+      - name: Run the main 300 in QEMU, every line the same as the reference
+        run: |
+          timeout 80m qemu-system-arm -M ${{ matrix.board }} -nographic -monitor none -serial none \
+            -semihosting-config enable=on,target=native -kernel test.elf > chip.log 2>&1
+          python3 runners/wokwi/check_log.py chip.log runners/computer/expected.txt | tee check.txt
+          grep -q '^problems the chip answered: 300$' check.txt
+          grep -q 'the same line as the reference .*: 300 of 300$' check.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qemu-${{ matrix.core }}-log
+          path: chip.log
+
+  cortex-m0:
+    name: Emulated ${{ matrix.core }} (QEMU, weekly or on request)
+    # The M0 has no FPU, so QEMU emulates all its floating point in software: the 300 take well over 90 minutes.
+    # It runs weekly and on request (workflow_dispatch), not on every push.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - core: cortex-m0plus
+            flags: -mcpu=cortex-m0
+            ld: microbit.ld
+            board: microbit
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the GNU Arm toolchain and QEMU
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q gcc-arm-none-eabi libnewlib-arm-none-eabi qemu-system-arm
+      - name: Build the test program with the ${{ matrix.core }} library
+        run: |
+          arm-none-eabi-gcc ${{ matrix.flags }} -mthumb -Os -ffreestanding -nostartfiles \
+            -Wl,--gc-sections -Wl,--no-enum-size-warning -Ibrain/include -Irunners/computer \
+            -T results/qemu/src/${{ matrix.ld }} \
+            results/qemu/src/main_qemu.c runners/computer/harness.c results/qemu/src/startup_cortex_m.c \
+            brain/lib/${{ matrix.core }}/libaa.a -lc -lgcc -o test.elf
+      - name: Run the main 300 in QEMU, every line the same as the reference
+        run: |
+          timeout 330m qemu-system-arm -M ${{ matrix.board }} -nographic -monitor none -serial none \
+            -semihosting-config enable=on,target=native -kernel test.elf > chip.log 2>&1
+          python3 runners/wokwi/check_log.py chip.log runners/computer/expected.txt | tee check.txt
+          grep -q '^problems the chip answered: 300$' check.txt
+          grep -q 'the same line as the reference .*: 300 of 300$' check.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qemu-${{ matrix.core }}-log
+          path: chip.log
