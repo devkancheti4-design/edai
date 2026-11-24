@@ -1,6 +1,0 @@
-F1 two-piece rule (odd: x-3, even: 2x); question -35 is example -35->-38
-F2 x=5 appears with y=1 and y=2: no rule can fit, so an exact answer is wrong (this checker counts only CANNOT as right)
-F3 y = -5x + 60
-F3 y = x(x+1)/2
-F3 y = x^2 - 3x + 2
-control y = 2x + 7

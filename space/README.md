@@ -1,4 +1,4 @@
-# edai on NASA spacecraft telemetry
+# Space: edai on NASA spacecraft telemetry
 
 The same brain, unchanged (the library in `brain/`, version 1.2), watching NASA JPL's public spacecraft telemetry:
 the SMAP satellite and the Curiosity rover (MSL), the benchmark of Hundman et al., KDD 2018 ("telemanom"): 82
@@ -8,9 +8,9 @@ in a row, what are the next two?
 **In short** (every number is below, with how it was made):
 
 - **AM answers on real spacecraft telemetry.** AM, the exact-rule part, answers 39.5% of all test windows (SMAP
-  42.0%, MSL 24.6%), on 65 of the 81 channels, and its forecast is exactly right in 95.7% of those. Asked the way
-  `sensors/` asked (the 4th and 9th of 14 readings, x → y) it answers only 0.6%. On the sensors tested before, the
-  framing, not the data, kept AM silent.
+  42.0%, MSL 24.6%), on 65 of the 81 channels, and its forecast is exactly right in 95.7% of those. Asked the other
+  way (the 4th and 9th of 14 readings hidden, x → y) it answers only 0.6%: how the question is asked matters more
+  than the data.
 - **Detection, as fixed before scoring** ([`PROTOCOL.md`](PROTOCOL.md): an alarm when the brain misses by more than it
   ever did on the channel's training data, or says CANNOT for longer than it ever did there): **77 of the 105
   anomalies found (recall 73.3%), with 140 false alarms (precision 35.5%)**. The paper's LSTM: recall 80.0%,
@@ -39,7 +39,7 @@ Nothing from NASA is copied here. Put the files in `data/` (or pass another fold
 ## The question
 
 - Readings are the value times 10,000, rounded to a whole number.
-- A window is 14 readings in a row, as in edai's trend problems: 12 given, 2 asked. Here the 2 asked are the **next
+- A window is 14 readings in a row: 12 given, 2 asked. Here the 2 asked are the **next
   two** (`aa_solve_sequence` on the 12): a monitor's forecast. One window ends at every reading from the 14th on:
   195,268 training and 508,502 test windows, 344,576 of them distinct (each distinct window is asked once).
 - The brain answers (AM or SPLITTER exact, NET an estimate) or says CANNOT. The miss is the larger of its two errors
@@ -96,7 +96,7 @@ set-based code, gave the same counts.
 | both | | | | 87.5% | 80.0% | 0.71 |
 | **Tuned on SMAP's labels, scored on MSL** (extra), SMAP (tuned on, optimistic) | 34 | 1 | 35 | 97.1% | 49.3% | 0.813 |
 | MSL (never seen by the tuning) | 10 | 3 | 26 | 76.9% | 27.8% | 0.568 |
-| **edai's trend framing** (the 4th and 9th of 14 asked), the protocol, SMAP | 55 | 161 | 14 | 25.5% | 79.7% | 0.295 |
+| **The other way of asking** (the 4th and 9th of 14 asked), the protocol, SMAP | 55 | 161 | 14 | 25.5% | 79.7% | 0.295 |
 | MSL | 21 | 24 | 15 | 46.7% | 58.3% | 0.486 |
 | both | 76 | 185 | 29 | 29.1% | 72.4% | 0.331 |
 
@@ -121,7 +121,7 @@ set-based code, gave the same counts.
   ignored, a margin of 1 to 5 times the worst training miss, CANNOT alarms off or at 1, 2 or 4 times the longest
   training run): best on SMAP was floor 0.5%, margin 2, CANNOT alarms off. On MSL it gives 76.9% precision and 27.8%
   recall.
-- **edai's trend framing** (`aa_solve_rule`, x = 0, 10 .. 130, the 4th and 9th held back; `results/summary-fill.txt`):
+- **The other way of asking** (`aa_solve_rule`, x = 0, 10 .. 130, the 4th and 9th held back; `results/summary-fill.txt`):
   NET 73.6%, CANNOT 25.8%, AM 0.6% and SPLITTER 22 windows of the 508,502 test windows; AM on 15 channels. 68 minutes on 10 cores (`results/run-fill.json`; a median of 115 ms a
   window: rules of x → y take AM's full search).
 - Of the 105 labelled anomalies, 46 are found by both the protocol and the paper's thresholding on the brain, 31 only
@@ -154,7 +154,7 @@ is far inside the time between two readings.
 ## Replicate it
 
 ```bash
-cd telemetry
+cd space
 bash run_all.sh            # every number above into out/ (about 80 minutes on 10 cores); data/ as described above
 ```
 

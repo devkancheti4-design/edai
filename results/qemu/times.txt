@@ -1,4 +1,0 @@
-m7 on mps2-an500: exit 0 in 377s
-m4f on mps2-an386: exit 0 in 437s
-m33 on mps2-an505: exit 0 in 462s
-m0 on microbit: exit 0 in 1800s

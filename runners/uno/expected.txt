@@ -1,9 +1,0 @@
-p000 trend by=NET ans=210,204 check=1000 right=1
-p001 noise by=CANNOT ans=CANNOT check=83 right=1
-p002 rule  by=AM ans=428,460 right=1
-p095 trend by=NET ans=-64,-363 check=1000 right=1
-p099 noise by=CANNOT ans=CANNOT check=0 right=1
-p105 rule  by=AM ans=567009,620944 right=1
-p193 rule  by=AM ans=238,228 right=1
-p199 trend by=NET ans=276,106 check=833 right=1
-p213 noise by=CANNOT ans=CANNOT check=333 right=1
