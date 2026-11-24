@@ -10,9 +10,9 @@ heap.
   hid from itself before it estimates. It also shows AM where to search.
 - **Otherwise it says CANNOT.** It does not guess.
 
-It runs on a **$4 Raspberry Pi Pico** (no floating-point unit), on phones and in browsers, on servers, and in a cut-down
-edition on an 8-bit **Arduino Uno with 2 KB of RAM**. It gives **the same answer, bit for bit, on every one of them**.
-It is supplied here compiled (`brain/`).
+It runs on a **$4 Raspberry Pi Pico** (no floating-point unit), on phones and in browsers, on servers, and, in a
+[2 KB edition](uno/README.md), on an 8-bit **Arduino Uno with 2 KB of RAM**. It gives **the same answer, bit for bit,
+on every one of them**. It is supplied here compiled (`brain/`).
 
 **Version 1.2** (23 November 2026): AM proves its answers (1.1), and the net is AM's light (1.2).
 
@@ -51,11 +51,15 @@ It needs so little because:
 6. **Its maths is its own.** `exp`, `tanh` and square roots are the library's own code, which is also why every chip
    gives the same answers.
 
+**And in 2 KB.** A cut-down edition keeps the same design (AM, its splitter and a net of 8 units) in **782 bytes** of
+state. On a real 8-bit Arduino Uno, the whole program peaked at **1,901 of the chip's 2,048 bytes** of RAM, and it got
+9 of 9 right ([`uno/`](uno/README.md)).
+
 The trade is time: because it learns on every question, it spends time where others spend memory. That is about
 20 ms a problem on a laptop. On the $4 Pico, an exact rule takes seconds, and a problem the net must learn about a
 minute.
 
-## Two tests
+## Three tests
 
 ### [Space: NASA spacecraft telemetry](space/README.md)
 
@@ -82,6 +86,17 @@ allowances: **100 bytes**.
 - **Every fault flagged:** knocks, stuck sensors, drifts, jobs it was never taught. **0 wrong answers in 525** windows.
 - **On the real Pico, every one of its 543 output lines was the same as the computer's.** A window took **0.54 ms**,
   against about 62 s for the brain learning alone.
+
+### [Uno: the 2 KB edition on a real Arduino Uno](uno/README.md)
+
+The Arduino Uno's ATmega328P is an 8-bit chip with 2 KB of RAM and no floating-point hardware. A cut-down edition of
+the brain, made from version 1.0, ran on a real board: AM, its splitter and a net of 8 units, in 782 bytes of state.
+
+- **9 of 9 right** (3 exact rules, 3 noisy trends, 3 of pure noise), and **all 9 lines the same as the computer's**.
+- **Memory, measured on the chip:** the whole program peaked at **1,901 of the 2,048 bytes**. It fills 31,936 of the
+  32,256 bytes of flash an Uno program can use.
+- **92 minutes** for the 9: exact rules in seconds to minutes, problems with no rule in 10 to 16 minutes. The whole
+  board drew 0.25 to 0.5 W.
 
 ## Use it
 
@@ -120,7 +135,7 @@ cc -std=c11 -I brain/include your.c brain/lib/macos-arm64/libaa.a -o your_progra
 The brain gives the same answer bit for bit on every target. That has been checked:
 - on a real Raspberry Pi Pico (all 300 problems of the earlier challenge, every line the same as the computer's);
 - on emulated Cortex-M4F, M7, M33 and M0 cores;
-- on a real Arduino Uno (the cut-down edition, peak memory 1,901 of its 2,048 bytes);
+- on a real Arduino Uno (the 2 KB edition: all 9 lines the same as the computer's, [`uno/`](uno/README.md));
 - on phones and in browsers;
 - in the shake test above (543 of 543 lines on the Pico).
 
@@ -135,4 +150,5 @@ up to commit `b3c00e9`.
 | `brain/include/aa.h`, `brain/lib/<target>/libaa.a` | the compiled brain for 9 targets, and its header |
 | `space/` | the NASA telemetry test: the program, the scripts, the protocol fixed before scoring, and the results |
 | `shake/` | the shake test: what was done and every result |
+| `uno/` | the 2 KB edition on a real Arduino Uno: the board's log, the computer's reference and the results |
 | `SHA256SUMS.txt` | the libraries' SHA-256 sums |
