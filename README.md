@@ -95,8 +95,9 @@ the brain, made from version 1.0, ran on a real board: AM, its splitter and a ne
 - **9 of 9 right** (3 exact rules, 3 noisy trends, 3 of pure noise), and **all 9 lines the same as the computer's**.
 - **Memory, measured on the chip:** the whole program peaked at **1,901 of the 2,048 bytes**. It fills 31,936 of the
   32,256 bytes of flash an Uno program can use.
-- **92 minutes** for the 9: exact rules in seconds to minutes, problems with no rule in 10 to 16 minutes. The whole
-  board drew 0.25 to 0.5 W.
+- **Speed, measured on the chip:** AM applies about **27,000 steps a second** (37 µs each). An exact rule takes from
+  about a second to 6 minutes, a problem with no rule 10 to 16 minutes: 92 minutes for the 9, on a board drawing 0.25
+  to 0.5 W.
 
 ## Use it
 

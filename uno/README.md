@@ -13,6 +13,9 @@ splitter and a small net, in **782 bytes** of state.
 - **Memory, measured on the chip:** at its peak, the whole program, brain included, used **1,901 of the 2,048 bytes**
   of RAM. 147 bytes were never touched.
 - **Flash:** the whole program is **31,936 of the 32,256 bytes** an Uno program can use.
+- **Speed, measured:** on the chip, AM applies about **27,000 steps a second** (37 µs each). An exact rule among the
+  shorter chains takes about a second, a full search of 2.1 million chains about 6 minutes, and the net learns 12
+  examples in 2 minutes.
 - **Time and power:** 92 minutes for the 9, on a board drawing 0.25 to 0.5 W.
 
 A partner ran it on a real Arduino Uno on 22 November 2026. This folder holds the run's results: the board's log and
@@ -39,12 +42,55 @@ examples x → y and asks for 2 more answers. A trend is right within its tolera
   CANNOT.
 - **Self-check:** the net hides each example in turn, learns from the others and guesses the hidden one. The score is
   the share it guessed to within a tenth of the examples' spread, out of 1,000. Below 500, the answer is CANNOT.
-- **Time:** an exact rule that AM finds early takes seconds; one deeper in its search took 5.8 minutes. A problem with
-  no exact rule takes 10 to 16 minutes, because AM searches everything first and then the net learns. With no
-  floating-point hardware, every number the net computes is worked out in software, 8 bits at a time. In all,
-  5,526 s (92.1 minutes).
+- **Time:** 5,526 s (92.1 minutes) in all. Where it goes is below.
 - **Power:** the partner's USB meter showed 0.25 to 0.5 W for the whole board. Most of that is the board's USB chip,
   regulator and LEDs, not the ATmega328P.
+
+## Speed, measured
+
+The board's own clock timed every problem (the `ms=` of each line in the log). To see where the time went, the same
+code was run on a computer with counters added. It gives the same 9 answers, and it counts the work in each problem:
+- the chains of AM's steps it tried;
+- the steps it applied to examples;
+- whether the net learned.
+
+Three speeds then account for every problem's time on the Uno to within 1%, and for the whole run's 5,526 s to within
+a second:
+
+| On the Uno | How long | |
+|---|---|---|
+| AM applies one step to one example | **37 µs** (595 clock cycles) | about **27,000 steps a second** |
+| AM moves on to the next chain of steps | 11 µs (181 cycles) | |
+| The net learns a problem and checks itself | **72 s** for 8 examples, **119 s** for 12 | |
+
+AM's steps are arithmetic on 64-bit whole numbers, which the 8-bit chip does 8 bits at a time. The net's numbers are
+floating point, which the chip works out in software.
+
+| Problem | Measured on the Uno | The three speeds give | AM's search | The net | Chains tried | Steps applied |
+|---|---|---|---|---|---|---|
+| p002 rule | 0.9 s | 0.9 s | 0.9 s | | 16,513 | 18,330 |
+| p193 rule | 2.7 s | 2.7 s | 2.7 s | | 16,513 | 68,412 |
+| p105 rule | 348.3 s | 344.7 s | 344.7 s | | 2,113,665 | 8,621,068 |
+| p099 noise | 613.6 s | 610.7 s | 538.5 s | 72.2 s | 4,227,330 | 13,187,824 |
+| p000 trend | 815.2 s | 813.8 s | 694.6 s | 119.2 s | 4,227,330 | 17,383,134 |
+| p095 trend | 834.7 s | 840.1 s | 768.0 s | 72.2 s | 4,227,330 | 19,355,785 |
+| p199 trend | 965.1 s | 971.0 s | 851.9 s | 119.2 s | 4,227,330 | 21,610,282 |
+| p001 noise | 965.9 s | 970.8 s | 851.6 s | 119.2 s | 4,227,330 | 21,603,427 |
+| p213 noise | 979.9 s | 970.8 s | 851.7 s | 119.2 s | 4,227,330 | 21,604,873 |
+| **all 9** | **5,526.3 s** | **5,525.5 s** | | | | |
+
+The board timed each problem as a whole; the split between AM's search and the net comes from the three speeds.
+
+What the times mean:
+- **An exact rule among the shorter chains takes about a second.** AM tries the 16,513 chains of up to two steps
+  (p002, p193).
+- **A rule of three steps takes one full search:** all 2,113,665 chains of up to three of AM's 128 steps, about
+  6 minutes (p105).
+- **A problem with no exact rule takes two full searches and the net:** AM's search, then its splitter's, then the
+  net. That is 10 to 16 minutes, 85 to 91% of it searching.
+
+**The same code on a computer.** On an Apple M4 Pro, the same code gives the same 9 answers in 0.19 s (the median of 7
+runs of each). The Uno takes about 29,000 times as long: it runs at 16 MHz, 8 bits at a time, in 2 KB of RAM.
 
 ## The memory, measured on the chip
 
