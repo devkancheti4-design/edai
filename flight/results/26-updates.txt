@@ -1,0 +1,5 @@
+26 broken updates, each flown by an unprotected and a guarded drone (405 s)
+unprotected: 20 fell, 3 lost their way, 3 got through
+guarded: 26 of 26 flew on or came home; caught as the update loaded: 26 of 26
+of the 23 that hurt the unprotected drone, the guarded one came through 23
+3 updates with the same answers: trusted by themselves 3

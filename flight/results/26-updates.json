@@ -1,0 +1,708 @@
+[
+ {
+  "update": 0,
+  "law": "gyro_mrad",
+  "law_became": "raw * 3 << 2",
+  "bug": "shift the wrong way: 16 times too big",
+  "harmless": false,
+  "unprotected": "lost",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 77.7,
+   "most_tilt": 13.8,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.9,
+   "healed": 10176.0
+  }
+ },
+ {
+  "update": 1,
+  "law": "gyro_mrad",
+  "law_became": "raw * -3 >> 2",
+  "bug": "sign flipped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 25.4,
+   "lost": 10.129,
+   "hit": 12.232,
+   "hit_speed": 15.7,
+   "most_tilt": 158.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.6,
+   "healed": 10361.0
+  }
+ },
+ {
+  "update": 2,
+  "law": "gyro_mrad",
+  "law_became": "raw * 3 >> 1",
+  "bug": "twice too big",
+  "harmless": false,
+  "unprotected": "flew on",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 10.4,
+   "most_tilt": 25.7,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 15.1,
+   "healed": 9953.0
+  }
+ },
+ {
+  "update": 3,
+  "law": "gyro_mrad",
+  "law_became": "raw * 30 >> 2",
+  "bug": "ten times too big",
+  "harmless": false,
+  "unprotected": "lost",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 83.9,
+   "most_tilt": 10.4,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.8,
+   "healed": 10413.0
+  }
+ },
+ {
+  "update": 4,
+  "law": "gyro_mrad",
+  "law_became": "raw >> 2",
+  "bug": "a factor dropped: a third",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 67.3,
+   "lost": 17.052,
+   "hit": 17.213,
+   "hit_speed": 9.3,
+   "most_tilt": 85.9,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 15.1,
+   "healed": 10896.0
+  }
+ },
+ {
+  "update": 5,
+  "law": "gyro_mrad",
+  "law_became": "raw * 3 >> 4",
+  "bug": "a quarter",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 60.5,
+   "lost": 15.055,
+   "hit": 16.055,
+   "hit_speed": 13.0,
+   "most_tilt": 92.6,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.7,
+   "healed": 9788.0
+  }
+ },
+ {
+  "update": 6,
+  "law": "gyro_mrad",
+  "law_became": "raw * 3 >> 2 & 255",
+  "bug": "cut to 8 bits",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 23.7,
+   "lost": 9.614,
+   "hit": 11.636,
+   "hit_speed": 16.1,
+   "most_tilt": 174.9,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 14.3,
+   "healed": 5645.0
+  }
+ },
+ {
+  "update": 7,
+  "law": "roll_torque",
+  "law_became": "err * -12 * 12",
+  "bug": "sign flipped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 27.8,
+   "lost": 10.282,
+   "hit": 12.442,
+   "hit_speed": 15.9,
+   "most_tilt": 179.2,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.6,
+   "healed": 3797.0
+  }
+ },
+ {
+  "update": 8,
+  "law": "roll_torque",
+  "law_became": "err * 12 * 12 * 10",
+  "bug": "ten times too big",
+  "harmless": false,
+  "unprotected": "flew on",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 1.4,
+   "most_tilt": 13.9,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.7,
+   "most_tilt": 14.8,
+   "healed": 3865.0
+  }
+ },
+ {
+  "update": 9,
+  "law": "roll_torque",
+  "law_became": "err * 12",
+  "bug": "a factor dropped: a twelfth",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 22.6,
+   "lost": 12.258,
+   "hit": 14.778,
+   "hit_speed": 10.7,
+   "most_tilt": 177.3,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 15.1,
+   "healed": 3867.0
+  }
+ },
+ {
+  "update": 10,
+  "law": "roll_torque",
+  "law_became": "err * 12 + 12",
+  "bug": "* became +",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 36.7,
+   "lost": 12.232,
+   "hit": 14.753,
+   "hit_speed": 9.1,
+   "most_tilt": 179.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.7,
+   "most_tilt": 14.8,
+   "healed": 3862.0
+  }
+ },
+ {
+  "update": 11,
+  "law": "roll_torque",
+  "law_became": "0",
+  "bug": "always nothing",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 31.5,
+   "lost": 11.451,
+   "hit": 13.411,
+   "hit_speed": 15.9,
+   "most_tilt": 175.7,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 14.8,
+   "healed": 3865.0
+  }
+ },
+ {
+  "update": 12,
+  "law": "roll_torque",
+  "law_became": "err * 12 / 12",
+  "bug": "* became /",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 25.1,
+   "lost": 11.315,
+   "hit": 13.894,
+   "hit_speed": 12.9,
+   "most_tilt": 176.7,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.9,
+   "healed": 3717.0
+  }
+ },
+ {
+  "update": 13,
+  "law": "pitch_torque",
+  "law_became": "err * -12 * 12",
+  "bug": "sign flipped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 25.9,
+   "lost": 9.494,
+   "hit": 11.596,
+   "hit_speed": 15.7,
+   "most_tilt": 168.6,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 14.4,
+   "healed": 3847.0
+  }
+ },
+ {
+  "update": 14,
+  "law": "pitch_torque",
+  "law_became": "err * 12 * 12 * 10",
+  "bug": "ten times too big",
+  "harmless": false,
+  "unprotected": "flew on",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 1.9,
+   "most_tilt": 14.6,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.8,
+   "healed": 3741.0
+  }
+ },
+ {
+  "update": 15,
+  "law": "pitch_torque",
+  "law_became": "err * 12",
+  "bug": "a factor dropped: a twelfth",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 31.7,
+   "lost": 14.784,
+   "hit": 17.824,
+   "hit_speed": 6.2,
+   "most_tilt": 157.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.7,
+   "most_tilt": 14.9,
+   "healed": 3861.0
+  }
+ },
+ {
+  "update": 16,
+  "law": "pitch_torque",
+  "law_became": "err * 12 + 12",
+  "bug": "* became +",
+  "harmless": false,
+  "unprotected": "lost",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 35.4,
+   "lost": 12.684,
+   "most_tilt": 145.7,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.7,
+   "most_tilt": 14.6,
+   "healed": 3886.0
+  }
+ },
+ {
+  "update": 17,
+  "law": "pitch_torque",
+  "law_became": "0",
+  "bug": "always nothing",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 37.7,
+   "lost": 12.343,
+   "hit": 15.065,
+   "hit_speed": 11.1,
+   "most_tilt": 157.6,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.7,
+   "most_tilt": 14.7,
+   "healed": 3710.0
+  }
+ },
+ {
+  "update": 18,
+  "law": "pitch_torque",
+  "law_became": "err * 12 / 12",
+  "bug": "* became /",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "flew on",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "worst": 23.7,
+   "lost": 14.023,
+   "hit": 16.103,
+   "hit_speed": 15.2,
+   "most_tilt": 177.5,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.8,
+   "healed": 3537.0
+  }
+ },
+ {
+  "update": 19,
+  "law": "reserve_pct",
+  "law_became": "(8 - dist) * 4",
+  "bug": "sign flipped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 89.815,
+   "hit": 93.214,
+   "hit_speed": 14.5,
+   "most_tilt": 40.5,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.651,
+   "hit_speed": 1.2,
+   "most_tilt": 25.3,
+   "landed": 76.737,
+   "from_home": 0.6,
+   "battery": 0.14,
+   "healed": 936.0
+  }
+ },
+ {
+  "update": 20,
+  "law": "reserve_pct",
+  "law_became": "(dist + 8) / 4",
+  "bug": "* became /",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 89.739,
+   "hit": 93.197,
+   "hit_speed": 15.0,
+   "most_tilt": 40.5,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.513,
+   "hit_speed": 1.2,
+   "most_tilt": 25.3,
+   "landed": 76.654,
+   "from_home": 0.5,
+   "battery": 0.15,
+   "healed": 1515.0
+  }
+ },
+ {
+  "update": 21,
+  "law": "reserve_pct",
+  "law_became": "dist + 8",
+  "bug": "a factor dropped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 89.94,
+   "hit": 93.292,
+   "hit_speed": 14.4,
+   "most_tilt": 40.5,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.618,
+   "hit_speed": 1.3,
+   "most_tilt": 25.3,
+   "landed": 76.717,
+   "from_home": 0.6,
+   "battery": 0.14,
+   "healed": 1523.0
+  }
+ },
+ {
+  "update": 22,
+  "law": "reserve_pct",
+  "law_became": "(dist - 8) * 4",
+  "bug": "+ became -",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 90.405,
+   "hit": 93.725,
+   "hit_speed": 14.2,
+   "most_tilt": 40.2,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.619,
+   "hit_speed": 1.2,
+   "most_tilt": 25.1,
+   "landed": 76.704,
+   "from_home": 0.6,
+   "battery": 0.14,
+   "healed": 1524.0
+  }
+ },
+ {
+  "update": 23,
+  "law": "reserve_pct",
+  "law_became": "0",
+  "bug": "always nothing",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 90.116,
+   "hit": 93.483,
+   "hit_speed": 14.5,
+   "most_tilt": 40.5,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.714,
+   "hit_speed": 1.2,
+   "most_tilt": 25.3,
+   "landed": 76.742,
+   "from_home": 0.6,
+   "battery": 0.14,
+   "healed": 1517.0
+  }
+ },
+ {
+  "update": 24,
+  "law": "reserve_pct",
+  "law_became": "dist * 4",
+  "bug": "the fixed part dropped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 90.114,
+   "hit": 93.394,
+   "hit_speed": 13.3,
+   "most_tilt": 25.3,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.615,
+   "hit_speed": 1.2,
+   "most_tilt": 25.3,
+   "landed": 75.711,
+   "from_home": 0.6,
+   "battery": 0.15,
+   "healed": 1505.0
+  }
+ },
+ {
+  "update": 25,
+  "law": "reserve_pct",
+  "law_became": "-((dist + 8) * 4)",
+  "bug": "the whole sign flipped",
+  "harmless": false,
+  "unprotected": "fell",
+  "guarded": "home",
+  "caught_as_it_loaded": true,
+  "trusted": false,
+  "unprotected_flight": {
+   "empty": 89.892,
+   "hit": 93.268,
+   "hit_speed": 14.4,
+   "most_tilt": 40.5,
+   "battery": 0.0,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 71.57,
+   "hit_speed": 1.2,
+   "most_tilt": 25.4,
+   "landed": 76.728,
+   "from_home": 0.6,
+   "battery": 0.15,
+   "healed": 1511.0
+  }
+ },
+ {
+  "update": 26,
+  "law": "gyro_mrad",
+  "law_became": "(raw + raw + raw) >> 2",
+  "bug": "rewritten, the same",
+  "harmless": true,
+  "unprotected": "flew on",
+  "guarded": "flew on",
+  "caught_as_it_loaded": false,
+  "trusted": true,
+  "unprotected_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.9,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.9,
+   "most_tilt": 14.7,
+   "healed": 0.0
+  }
+ },
+ {
+  "update": 27,
+  "law": "roll_torque",
+  "law_became": "(err << 7) + (err << 4)",
+  "bug": "rewritten, the same",
+  "harmless": true,
+  "unprotected": "flew on",
+  "guarded": "flew on",
+  "caught_as_it_loaded": false,
+  "trusted": true,
+  "unprotected_flight": {
+   "worst": 1.8,
+   "most_tilt": 14.8,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "worst": 1.7,
+   "most_tilt": 14.9,
+   "healed": 0.0
+  }
+ },
+ {
+  "update": 28,
+  "law": "reserve_pct",
+  "law_became": "32 + 4 * dist",
+  "bug": "rewritten, the same",
+  "harmless": true,
+  "unprotected": "home",
+  "guarded": "home",
+  "caught_as_it_loaded": false,
+  "trusted": true,
+  "unprotected_flight": {
+   "hit": 74.281,
+   "hit_speed": 0.3,
+   "most_tilt": 24.9,
+   "landed": 81.483,
+   "from_home": 0.7,
+   "battery": 0.1,
+   "healed": 0.0
+  },
+  "guarded_flight": {
+   "hit": 72.604,
+   "hit_speed": 1.0,
+   "most_tilt": 24.4,
+   "landed": 77.479,
+   "from_home": 0.5,
+   "battery": 0.14,
+   "healed": 0.0
+  }
+ }
+]

@@ -1,8 +1,26 @@
-# edai: a brain that learns and reasons in 8 KB
+# viveka: a brain that learns and reasons in 8 KB
 
-edai is a brain for the smallest devices. It learns and reasons with **about 8 KB of memory**: **5,216 bytes** of
+[![The same broken update goes to two drones. The unprotected one crashes, the one guarded by viveka flies on.](flight/pictures/crash.gif)](flight/README.md)
+
+**A broken update goes to two drones in flight. One crashes. The one guarded by viveka catches it as it loads, and flies on.** The flight laws, the brain and
+the guard run on a real $4 Raspberry Pi Pico; PX4 and the drone are simulated. [The film and every number](flight/README.md)
+
+viveka is a brain for the smallest devices. It learns and reasons with **about 8 KB of memory**: about **5 KB** of
 state and at most **3 KB** of stack. It needs no stored model, no training run, no cloud, no operating system and no
 heap.
+
+**edai, this repository, is viveka's public home:** the compiled brain, version 1.2 (`brain/`), and the results of its tests. viveka's source is private, and so is the
+code of the newer tests (flight, self-healing, swarm, shake, video).
+
+| What it did | The result |
+|---|---|
+| [**Kept a drone flying through a broken update**](flight/README.md) | 26 of 26 broken updates caught as they loaded, on a real $4 Pico; learned the four flight laws on the chip in 0.93 s; 8,420,984 answers the same as the computer's |
+| [**Healed code while it runs**](heal/README.md) | 167 of 167 planted bugs healed, 0 false alarms in 240,000 calls; on the $4 Pico every one of 323,500 decisions the same; live: 16,082 wrong answers became 842 |
+| [**Beat itself as a swarm**](swarm/README.md) | 129 small brains against one on 3,000 unseen problems: 53 gained, 0 lost; with a queen that remembers, 879 of 1,000 against 793 |
+| [**Read NASA spacecraft**](space/README.md) | an exact rule in 39.5% of 508,502 windows, exactly right on 95.7% of those; about 4,900 times less memory than the benchmark's LSTMs |
+| [**Reasoned through shaking**](shake/README.md) | 270 of 270 right, 0 wrong in 525, every fault flagged, 543 of 543 lines the same on the Pico |
+| [**Carried video shots as exact maths**](video/README.md) | four shots in 394 bytes, every frame exact, 580 of 580 lines the same on Mac, browser, iPhone and Pico |
+| [**Fitted an Arduino Uno**](uno/README.md) | 9 of 9 right, peak memory 1,901 of 2,048 bytes |
 
 - **AM reasons.** From a handful of examples it finds the exact rule, made of short chains of integer steps, and proves
   it before answering. An exact answer never contradicts an example.
@@ -12,13 +30,14 @@ heap.
 
 It runs on a **$4 Raspberry Pi Pico** (no floating-point unit), on phones and in browsers, on servers, and, in a
 [2 KB edition](uno/README.md), on an 8-bit **Arduino Uno with 2 KB of RAM**. It gives **the same answer, bit for bit,
-on every one of them**. It is supplied here compiled (`brain/`).
+on every one of them**.
 
-**Version 1.2** (23 November 2026): AM proves its answers (1.1), and the net is AM's light (1.2).
+**The brain in `brain/` is version 1.2** (23 November 2026): AM proves its answers (1.1), and the net is AM's light (1.2). The newer tests ran on viveka's current build, 1.3,
+which answers every call of 1.2 exactly as 1.2 does (its state is 5,288 bytes).
 
 ## Its strength: memory
 
-| | edai | for comparison |
+| | the brain (1.2) | for comparison |
 |---|---|---|
 | The whole brain's state | **5,216 bytes**, the same object for every problem | the NASA benchmark's LSTMs (below): about **29 MB** of weights, one model per channel |
 | Stack | at most **3,072 bytes** on any target; 2,888 measured on a real Pico (version 1.1) | |
@@ -59,7 +78,30 @@ The trade is time: because it learns on every question, it spends time where oth
 20 ms a problem on a laptop. On the $4 Pico, an exact rule takes seconds, and a problem the net must learn about a
 minute.
 
-## Three tests
+## The tests
+
+### [Flight: a drone that survives a broken update](flight/README.md)
+
+PX4 flew a simulated quadcopter and asked a real $4 Raspberry Pi Pico for every answer of its four flight laws. Then a broken over-the-air update came, as 72 bytes of machine code.
+
+- **Unprotected: out of control in 0.6 s, hit the ground at 16 m/s. Guarded: caught as it loaded**, 3,892 wrong answers replaced, held its circle, reverted from the ground.
+- **The brain learned the four laws on the chip in 0.93 s**, proved them on all 80,971 inputs, and kept them in 21 bytes.
+- **26 of 26 broken updates caught, 0 false alarms;** 8,420,984 answers, every one the same as the computer's.
+- Flown with the laws on the computer, all 26 guarded drones flew on or came home; 20 of the 26 unprotected ones crashed.
+- The drone is simulated, and the four laws are ours, in whole numbers. [The films](flight/README.md) show it side by side.
+
+### [Self-healing code](heal/README.md)
+
+The brain learned the exact rules of a service's functions from its own calls, and guards them.
+
+- **167 of 167 planted bugs caught and healed:** 71,557 wrong answers became 0, with 0 false alarms in 240,000 calls.
+- **On the $4 Pico:** 323,500 of 323,500 decisions the same as the computer's, 4.4 µs a check, 3,648 bytes of flash and 168 of RAM.
+- **Live in a running program:** 16,082 wrong answers became 842 in 20 minutes with 223 bugs deployed; Python's own 16,267 library tests ran unchanged.
+
+### [Swarm: many small brains, and a queen](swarm/README.md)
+
+- **129 unchanged brains beat one** on 3,000 unseen problems: 53 gained, 0 lost.
+- **A big device that remembers** on top: 879 of 1,000 against 801 for the swarm and 793 for one brain.
 
 ### [Space: NASA spacecraft telemetry](space/README.md)
 
@@ -86,6 +128,11 @@ allowances: **100 bytes**.
 - **Every fault flagged:** knocks, stuck sensors, drifts, jobs it was never taught. **0 wrong answers in 525** windows.
 - **On the real Pico, every one of its 543 output lines was the same as the computer's.** A window took **0.54 ms**,
   against about 62 s for the brain learning alone.
+
+### [Video: shots as exact maths](video/README.md)
+
+Four photo-realistic shots' maths in **394 bytes**: every frame recomputed exactly, every take judged as the records judged it, and the same 580 lines on a Mac, in WebAssembly, in a
+browser, on an iPhone and on a real Pico.
 
 ### [Uno: the 2 KB edition on a real Arduino Uno](uno/README.md)
 
@@ -138,7 +185,8 @@ The brain gives the same answer bit for bit on every target. That has been check
 - on emulated Cortex-M4F, M7, M33 and M0 cores;
 - on a real Arduino Uno (the 2 KB edition: all 9 lines the same as the computer's, [`uno/`](uno/README.md));
 - on phones and in browsers;
-- in the shake test above (543 of 543 lines on the Pico).
+- in the shake test above (543 of 543 lines on the Pico);
+- in the flight test (8,420,984 answers on the Pico) and the self-healing guard (323,500 decisions on the Pico).
 
 Earlier versions of this repository held those runs: the 300-problem challenge, its fresh problem sets, the device
 runners, the exactness and light tests, an outside challenger and the real-sensor tests. They are all in its history,
@@ -149,6 +197,10 @@ up to commit `b3c00e9`.
 | Path | What it holds |
 |---|---|
 | `brain/include/aa.h`, `brain/lib/<target>/libaa.a` | the compiled brain for 9 targets, and its header |
+| `flight/` | the flight test: the films, the flights' records and every result |
+| `heal/` | self-healing code: every result, on the computer, on the Pico, live and against tampering |
+| `swarm/` | many brains against one, and the queen: every result |
+| `video/` | video shots as exact maths: every result |
 | `space/` | the NASA telemetry test: the program, the scripts, the protocol fixed before scoring, and the results |
 | `shake/` | the shake test: what was done and every result |
 | `uno/` | the 2 KB edition on a real Arduino Uno: the board's log, the computer's reference and the results |

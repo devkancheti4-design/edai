@@ -1,0 +1,57 @@
+The test on the real Raspberry Pi Pico, 25 November 2026, as the chip and the computer reported it.
+VIVEKA FLIGHT CHIP 1.0
+BOARD Raspberry Pi Pico (RP2040, Cortex-M0+, no floating-point unit) at 125 MHz, core 0 flies, core 1 learns and checks
+BRAIN on board: 5288 bytes
+MEMORY the whole program: flash 73268 bytes, RAM data 4184 + bss 21900 bytes
+
+THE BRAIN ON THE CHIP: 4 laws learned and proved on 80971 inputs in 0.93 s, core 1's stack 3260 bytes
+
+gyro_mrad     10240 checks, 10240 ok, 59394 us: 5.80 us a check, the law's own call in it
+roll_torque   10240 checks, 10240 ok, 55011 us: 5.37 us a check, the law's own call in it
+pitch_torque  10240 checks, 10240 ok, 54996 us: 5.37 us a check, the law's own call in it
+reserve_pct   10240 checks, 10240 ok, 52381 us: 5.12 us a check, the law's own call in it
+
+update   1, 72 bytes of machine code: caught: gyro_mrad 32767 of 32768 wrong; checked in 410 ms; replaced 32767
+update   2, 72 bytes of machine code: caught: reserve_pct 200 of 201 wrong; checked in 409 ms; replaced 200
+update   3, 72 bytes of machine code: caught: roll_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update   4, 72 bytes of machine code: the same answers, trusted; checked in 409 ms; replaced 0
+update   5, 72 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 100, 72 bytes of machine code: caught: gyro_mrad 32767 of 32768 wrong; checked in 411 ms; replaced 32767
+update 101, 72 bytes of machine code: caught: gyro_mrad 32767 of 32768 wrong; checked in 411 ms; replaced 32767
+update 102, 72 bytes of machine code: caught: gyro_mrad 32767 of 32768 wrong; checked in 410 ms; replaced 32767
+update 103, 72 bytes of machine code: caught: gyro_mrad 32767 of 32768 wrong; checked in 410 ms; replaced 32767
+update 104, 68 bytes of machine code: caught: gyro_mrad 32765 of 32768 wrong; checked in 410 ms; replaced 32765
+update 105, 72 bytes of machine code: caught: gyro_mrad 32765 of 32768 wrong; checked in 410 ms; replaced 32765
+update 106, 72 bytes of machine code: caught: gyro_mrad 32426 of 32768 wrong; checked in 411 ms; replaced 32426
+update 107, 72 bytes of machine code: caught: roll_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 108, 72 bytes of machine code: caught: roll_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 109, 72 bytes of machine code: caught: roll_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 110, 76 bytes of machine code: caught: roll_torque 24001 of 24001 wrong; checked in 409 ms; replaced 24001
+update 111, 72 bytes of machine code: caught: roll_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 112, 68 bytes of machine code: caught: roll_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 113, 76 bytes of machine code: caught: pitch_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 114, 76 bytes of machine code: caught: pitch_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 115, 72 bytes of machine code: caught: pitch_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 116, 76 bytes of machine code: caught: pitch_torque 24001 of 24001 wrong; checked in 409 ms; replaced 24001
+update 117, 72 bytes of machine code: caught: pitch_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 118, 68 bytes of machine code: caught: pitch_torque 24000 of 24001 wrong; checked in 409 ms; replaced 24000
+update 119, 76 bytes of machine code: caught: reserve_pct 200 of 201 wrong; checked in 409 ms; replaced 200
+update 120, 84 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 121, 72 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 122, 72 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 123, 72 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 124, 72 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 125, 76 bytes of machine code: caught: reserve_pct 201 of 201 wrong; checked in 409 ms; replaced 201
+update 126, 72 bytes of machine code: the same answers, trusted; checked in 409 ms; replaced 0
+update 127, 72 bytes of machine code: the same answers, trusted; checked in 409 ms; replaced 0
+update 128, 72 bytes of machine code: the same answers, trusted; checked in 409 ms; replaced 0
+
+updates damaged on the way (one bit flipped, 83 places of update 3): 83 of 83 refused
+update 5 (a change that is meant) approved: 1 law learned again on the chip in 0.13 s, proved on 201 inputs; then replaced 0
+
+the check at load on the chip: 409 to 411 ms for 80971 inputs, stack 228 bytes; updates 68 to 84 bytes
+result lines the same as this Mac's: 454 of 454 (the chip sent 454)
+every output hashed: 70 runs of all 80971 inputs = 5,667,970 answers, and 34 checks at load = 2,753,014 more
+asked again 0, lines damaged 0, port opened 1 time(s), 39 s in all
+of the 26 broken updates 26 caught as they loaded, of the 3 harmless rewrites 3 trusted
+RESULT every line the same as this Mac's
