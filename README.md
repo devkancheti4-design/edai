@@ -10,12 +10,13 @@ state and at most **3 KB** of stack. It needs no stored model, no training run, 
 heap.
 
 **edai, this repository, is viveka's public home:** the compiled brain, version 1.2 (`brain/`), and the results of its tests. viveka's source is private, and so is the
-code of the newer tests (flight, self-healing, swarm, shake, video).
+code of the newer tests (flight, self-healing, taught once, swarm, shake, video).
 
 | What it did | The result |
 |---|---|
 | [**Kept a drone flying through a broken update**](flight/README.md) | 26 of 26 broken updates caught as they loaded, on a real $4 Pico; learned the four flight laws on the chip in 0.93 s; 8,420,984 answers the same as the computer's |
 | [**Healed code while it runs**](heal/README.md) | 167 of 167 planted bugs healed, 0 false alarms in 240,000 calls; on the $4 Pico every one of 323,500 decisions the same; live: 16,082 wrong answers became 842 |
+| [**Was taught once, and every chip knew**](taught/README.md) | on the real $4 Pico 93 problems in 0.96 s instead of 699.5 s, 729 times faster; 94 rules in 449 bytes |
 | [**Beat itself as a swarm**](swarm/README.md) | 129 small brains against one on 3,000 unseen problems: 53 gained, 0 lost; with a queen that remembers, 879 of 1,000 against 793 |
 | [**Read NASA spacecraft**](space/README.md) | an exact rule in 39.5% of 508,502 windows, exactly right on 95.7% of those; about 4,900 times less memory than the benchmark's LSTMs |
 | [**Reasoned through shaking**](shake/README.md) | 270 of 270 right, 0 wrong in 525, every fault flagged, 543 of 543 lines the same on the Pico |
@@ -97,6 +98,13 @@ The brain learned the exact rules of a service's functions from its own calls, a
 - **167 of 167 planted bugs caught and healed:** 71,557 wrong answers became 0, with 0 false alarms in 240,000 calls.
 - **On the $4 Pico:** 323,500 of 323,500 decisions the same as the computer's, 4.4 µs a check, 3,648 bytes of flash and 168 of RAM.
 - **Live in a running program:** 16,082 wrong answers became 842 in 20 minutes with 223 bugs deployed; Python's own 16,267 library tests ran unchanged.
+
+### [Taught once, known by every chip](taught/README.md)
+
+One brain finds the rules, every other chip gets them as a few bytes.
+
+- **On the real $4 Pico: 93 problems in 0.96 s instead of 699.5 s of searching**, 729 times faster, every answer the teacher's.
+- **94 rules in 449 bytes**; an update is 20 bytes, taken in 1.5 ms; every damaged copy was refused.
 
 ### [Swarm: many small brains, and a queen](swarm/README.md)
 
@@ -199,6 +207,7 @@ up to commit `b3c00e9`.
 | `brain/include/aa.h`, `brain/lib/<target>/libaa.a` | the compiled brain for 9 targets, and its header |
 | `flight/` | the flight test: the films, the flights' records and every result |
 | `heal/` | self-healing code: every result, on the computer, on the Pico, live and against tampering |
+| `taught/` | rules found once and used by every chip: every result |
 | `swarm/` | many brains against one, and the queen: every result |
 | `video/` | video shots as exact maths: every result |
 | `space/` | the NASA telemetry test: the program, the scripts, the protocol fixed before scoring, and the results |
